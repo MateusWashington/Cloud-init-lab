@@ -1,0 +1,23 @@
+# Diretórios locais do .terraform
+*.terraform*
+
+# Arquivos do .tfstate
+*.tfstate
+*.tfstate.*
+
+# Arquivos de log de falhas (crash logs)
+crash.log
+crash_*_crash.log
+
+# Excluir variáveis sensíveis ou arquivos de substituição (override)
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignorar arquivos específicos do desenvolvedor ou gerados pelo sistema operacional
+.DS_Store
+.vscode/
+.idea/

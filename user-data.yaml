@@ -1,0 +1,39 @@
+#cloud-config
+
+# Definição do hostname da máquina virtual
+hostname: servidor-desafio-devops
+fqdn: servidor-desafio-devops.local
+
+# Atualização automática dos índices de pacotes e pacotes existentes na inicialização
+
+package_update: true
+package_upgrade: true
+
+# Lista de pacotes essenciais para instalar (incluindo Docker e Nginx)
+
+packages:
+  - curl
+  - git
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+  - lsb-release
+  - docker.io
+  - nginx
+
+# Comandos executados para configurar e inicializar os serviços necessários
+
+runcmd:
+  # Adiciona o utilizador padrão (ubuntu) ao grupo do Docker para execução sem sudo (opcional, mas recomendado)
+  - usermod -aG docker ubuntu
+
+  # Habilita e inicializa o serviço do Docker
+  - systemctl enable docker
+  - systemctl start docker
+
+  # Habilita e inicializa o serviço do Nginx
+  - systemctl enable nginx
+  - systemctl start nginx
+
+  # Cria uma página HTML personalizada para validar que o Nginx está  funcinando
+  - echo "<h1>Ambiente configurado com sucesso via Cloud-Init!</h1>" > /var/www/html/index.html
