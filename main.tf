@@ -1,17 +1,5 @@
-# Busca automaticamente a AMI mais recente do Ubuntu 22.04 LTS
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"] # Canonical
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+locals {
+  ubuntu_ami_id = "ami-0c7217cdde317cfec" # ID de exemplo do Ubuntu 22.04 na us-east-1
 }
 
 # Security Group liberando HTTP (80) e SSH (22)
@@ -32,7 +20,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Em producao, restrinja para o seu IP
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -49,7 +37,7 @@ resource "aws_security_group" "web_sg" {
 
 # Instância EC2 com Cloud-Init
 resource "aws_instance" "web_server" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = local.ubuntu_ami_id
   instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
